@@ -1,13 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { MemoBoard } from "@/components/memo/memo-board";
 
 export const Route = createFileRoute("/_app/")({
-  component: MemoBoardPlaceholder,
+  component: MemoBoardPage,
 });
 
-function MemoBoardPlaceholder() {
-  return (
-    <div className="p-6 text-body-sm text-ink-black/60">
-      メモボードは次のステップで実装します。
-    </div>
-  );
+function MemoBoardPage() {
+  return <MemoBoard />;
 }
