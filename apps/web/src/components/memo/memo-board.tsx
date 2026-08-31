@@ -1,14 +1,16 @@
 import { useMemo, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { FileText, Filter, Plus, Search, X } from "lucide-react";
+import { FileText, Filter, LayoutGrid, Plus, Search, Share2, X } from "lucide-react";
 import type { Memo, MemoTag } from "@repo/shared";
 import { createMemo, deleteMemo, fetchMemos } from "@/lib/api";
 import { classifyMessage, detectMediaType } from "@/lib/classify";
 import { TAG_META, TAG_ORDER } from "@/lib/tag-meta";
 import { MemoCard } from "./memo-card";
+import { MemoNetwork } from "./memo-network";
 import { TagIcon } from "./tag-icon";
 
 type FilterTag = MemoTag | "all";
+type DisplayMode = "grid" | "network";
 const EMPTY_MEMOS: Memo[] = [];
 
 export function MemoBoard() {
@@ -19,6 +21,7 @@ export function MemoBoard() {
   const [filter, setFilter] = useState<FilterTag>("all");
   const [search, setSearch] = useState("");
   const [sortBy, setSortBy] = useState<"date" | "tag">("date");
+  const [displayMode, setDisplayMode] = useState<DisplayMode>("grid");
   const [showAdd, setShowAdd] = useState(false);
   const [newContent, setNewContent] = useState("");
   const [newTag, setNewTag] = useState<MemoTag | "auto">("auto");
@@ -192,6 +195,30 @@ export function MemoBoard() {
                 タグ別
               </button>
             </div>
+            <div className="flex items-center rounded-xl border border-border bg-pure-white p-0.5">
+              <button
+                type="button"
+                onClick={() => setDisplayMode("grid")}
+                className={`flex items-center gap-1 rounded-lg px-2.5 py-1.5 text-xs font-medium transition-colors duration-200 ${
+                  displayMode === "grid"
+                    ? "bg-sky-tint text-notion-blue"
+                    : "text-ink-black/40 hover:text-ink-black"
+                }`}
+              >
+                <LayoutGrid className="size-3.5" /> グリッド
+              </button>
+              <button
+                type="button"
+                onClick={() => setDisplayMode("network")}
+                className={`flex items-center gap-1 rounded-lg px-2.5 py-1.5 text-xs font-medium transition-colors duration-200 ${
+                  displayMode === "network"
+                    ? "bg-sky-tint text-notion-blue"
+                    : "text-ink-black/40 hover:text-ink-black"
+                }`}
+              >
+                <Share2 className="size-3.5" /> ネットワーク
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -286,43 +313,52 @@ export function MemoBoard() {
         </div>
       )}
 
-      {grouped ? (
-        <div className="space-y-7">
-          {TAG_ORDER.map((tag) => {
-            const items = grouped[tag];
-            if (items.length === 0) return null;
-            const meta = TAG_META[tag];
-            return (
-              <section key={tag}>
-                <div className="mb-3 flex items-center gap-2.5">
-                  <div
-                    className={`flex size-8 items-center justify-center rounded-xl ${meta.className}`}
-                  >
-                    <TagIcon name={meta.icon} className="size-4" />
+      {memosQuery.isSuccess && filtered.length > 0 && displayMode === "network" && (
+        <MemoNetwork
+          memos={filtered}
+          onDelete={(id) => deleteMutation.mutate(id)}
+        />
+      )}
+
+      {memosQuery.isSuccess &&
+        filtered.length > 0 &&
+        displayMode === "grid" &&
+        (grouped ? (
+          <div className="space-y-7">
+            {TAG_ORDER.map((tag) => {
+              const items = grouped[tag];
+              if (items.length === 0) return null;
+              const meta = TAG_META[tag];
+              return (
+                <section key={tag}>
+                  <div className="mb-3 flex items-center gap-2.5">
+                    <div
+                      className={`flex size-8 items-center justify-center rounded-xl ${meta.className}`}
+                    >
+                      <TagIcon name={meta.icon} className="size-4" />
+                    </div>
+                    <h3 className="text-body-sm font-semibold text-ink-black">
+                      {meta.label}
+                    </h3>
+                    <span className="text-caption font-medium text-ink-black/40">
+                      {items.length}件
+                    </span>
+                    <div className="h-px flex-1 bg-border" />
                   </div>
-                  <h3 className="text-body-sm font-semibold text-ink-black">
-                    {meta.label}
-                  </h3>
-                  <span className="text-caption font-medium text-ink-black/40">
-                    {items.length}件
-                  </span>
-                  <div className="h-px flex-1 bg-border" />
-                </div>
-                <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
-                  {items.map((memo) => (
-                    <MemoCard
-                      key={memo.id}
-                      memo={memo}
-                      onDelete={(id) => deleteMutation.mutate(id)}
-                    />
-                  ))}
-                </div>
-              </section>
-            );
-          })}
-        </div>
-      ) : (
-        filtered.length > 0 && (
+                  <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
+                    {items.map((memo) => (
+                      <MemoCard
+                        key={memo.id}
+                        memo={memo}
+                        onDelete={(id) => deleteMutation.mutate(id)}
+                      />
+                    ))}
+                  </div>
+                </section>
+              );
+            })}
+          </div>
+        ) : (
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
             {filtered.map((memo) => (
               <MemoCard
@@ -332,8 +368,7 @@ export function MemoBoard() {
               />
             ))}
           </div>
-        )
-      )}
+        ))}
     </div>
   );
 }
