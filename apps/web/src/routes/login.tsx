@@ -26,7 +26,10 @@ function LoginPage() {
     setError("");
     setPending(true);
     try {
-      await login(email, password);
+      await login(
+        email.trim() || DEMO_LOGIN.email,
+        password || DEMO_LOGIN.password,
+      );
       await navigate({ to: "/" });
     } catch {
       setError("メールアドレスまたはパスワードが間違っています");
@@ -70,7 +73,6 @@ function LoginPage() {
                 onChange={(event) => setEmail(event.target.value)}
                 placeholder={DEMO_LOGIN.email}
                 autoComplete="email"
-                required
                 className="w-full rounded-lg border border-border bg-pure-white py-2.5 pr-3.5 pl-10 text-body-sm text-ink-black outline-none transition-colors duration-200 placeholder:text-ink-black/40 focus:border-notion-blue"
               />
             </div>
@@ -92,7 +94,6 @@ function LoginPage() {
                 onChange={(event) => setPassword(event.target.value)}
                 placeholder="••••••••"
                 autoComplete="current-password"
-                required
                 className="w-full rounded-lg border border-border bg-pure-white py-2.5 pr-3.5 pl-10 text-body-sm text-ink-black outline-none transition-colors duration-200 placeholder:text-ink-black/40 focus:border-notion-blue"
               />
             </div>
@@ -115,15 +116,7 @@ function LoginPage() {
 
           <div className="border-t border-border pt-3 text-center">
             <p className="text-[11px] leading-relaxed text-ink-black/40">
-              デモアカウント:{" "}
-              <span className="font-semibold text-ink-black/60">
-                {DEMO_LOGIN.email}
-              </span>
-              <br />
-              パスワード:{" "}
-              <span className="font-semibold text-ink-black/60">
-                {DEMO_LOGIN.password}
-              </span>
+              空のままでも、ログインを押すとデモアカウントで入れます
             </p>
           </div>
         </form>
