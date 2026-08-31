@@ -1,13 +1,12 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { SettingsView } from "@/components/settings/settings-view";
+import { Route as AppRoute } from "../_app";
 
 export const Route = createFileRoute("/_app/settings")({
-  component: SettingsPlaceholder,
+  component: SettingsPage,
 });
 
-function SettingsPlaceholder() {
-  return (
-    <div className="p-6 text-body-sm text-ink-black/60">
-      設定画面は後のステップで実装します。
-    </div>
-  );
+function SettingsPage() {
+  const { user } = AppRoute.useRouteContext();
+  return <SettingsView user={user} />;
 }

@@ -4,11 +4,13 @@ import {
   memoListResponseSchema,
   memoSchema,
   notificationSettingsSchema,
+  updateNotificationSettingsRequestSchema,
   userSchema,
   type CreateMemoRequest,
   type Memo,
   type MemoListResponse,
   type NotificationSettings,
+  type UpdateNotificationSettingsRequest,
   type User,
 } from "@repo/shared";
 
@@ -59,4 +61,16 @@ export async function createMemo(input: CreateMemoRequest): Promise<Memo> {
 export async function deleteMemo(id: string): Promise<void> {
   const res = await fetch(`/api/memos/${id}`, { method: "DELETE" });
   if (!res.ok && res.status !== 204) throw new Error("failed to delete memo");
+}
+
+export async function updateNotifications(
+  input: UpdateNotificationSettingsRequest,
+): Promise<NotificationSettings> {
+  const res = await fetch("/api/notifications", {
+    method: "PATCH",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(updateNotificationSettingsRequestSchema.parse(input)),
+  });
+  if (!res.ok) throw new Error("failed to update notifications");
+  return notificationSettingsSchema.parse(await res.json());
 }

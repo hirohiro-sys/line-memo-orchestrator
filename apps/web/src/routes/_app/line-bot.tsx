@@ -1,13 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { LineBotView } from "@/components/line-bot/line-bot-view";
 
 export const Route = createFileRoute("/_app/line-bot")({
-  component: LineBotPlaceholder,
+  component: LineBotPage,
 });
 
-function LineBotPlaceholder() {
-  return (
-    <div className="p-6 text-body-sm text-ink-black/60">
-      LINE Bot 画面は後のステップで実装します。
-    </div>
-  );
+function LineBotPage() {
+  return <LineBotView />;
 }

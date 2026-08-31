@@ -162,6 +162,9 @@
   --sidebar-accent-foreground: #e6f3fe;
   --sidebar-border: rgb(255 255 255 / 10%);
   --sidebar-ring: #0075de;
+  --color-paper-warmth: #111111;
+  --color-pure-white: #1a1a1a;
+  --color-ink-black: #ffffff;
 }
 
 @layer base {
