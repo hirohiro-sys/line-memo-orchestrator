@@ -1,26 +1,15 @@
-# line-memo-orchestrator
+# LINEメモオーケストレーター（仮）
 
-LINE に投げたメモを Web で見返す個人用アプリ。いまはフロントだけ。API は MSW でモックする。
 
-## 構成
+### 概要
 
-```
-apps/web          Vite + React + TanStack Router/Query + Tailwind + shadcn
-packages/shared   Zod スキーマ（画面と MSW で共有）
-```
+LINEを活用した個人用のインタースティシャルジャーナリングツール。インタースティシャルジャーナリングとは、仕事やタスクの合間の「隙間時間」を使って、今の気持ちや直前の作業、次にやるべきことを短く書き留めることを指す。
 
-Hono / Cloudflare（D1・R2）は未着手。
+### 技術スタック
+...
 
-## 前提
+### ディレクトリ構成
+...
 
-- Node.js 24.14.0 以上
-- pnpm 10.34.5 以上（`packageManager` で固定）
-
-## 起動
-
-```bash
-pnpm install
-pnpm dev
-```
-
-`http://localhost:5173` が開く。開発時だけ MSW が `/api/*` を返す。
+### セットアップ手順
+...
