@@ -5,7 +5,7 @@ import { fetchMemos, fetchNotifications, logout } from "@/lib/api";
 import type { User } from "@repo/shared";
 
 const NAV_ITEMS = [
-  { to: "/", label: "メモボード", icon: FileText, exact: true },
+  { to: "/", label: "メモ一覧", icon: FileText, exact: true },
   { to: "/line-bot", label: "LINE Bot", icon: Bot, exact: false },
   { to: "/settings", label: "設定", icon: Settings, exact: false },
 ] as const;

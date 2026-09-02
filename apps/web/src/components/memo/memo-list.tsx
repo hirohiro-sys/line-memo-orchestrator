@@ -11,7 +11,7 @@ import { TagIcon } from "./tag-icon";
 type FilterTag = MemoTag | "all";
 const EMPTY_MEMOS: Memo[] = [];
 
-export function MemoBoard() {
+export function MemoList() {
   const queryClient = useQueryClient();
   const memosQuery = useQuery({ queryKey: ["memos"], queryFn: fetchMemos });
   const memos = memosQuery.data?.items ?? EMPTY_MEMOS;

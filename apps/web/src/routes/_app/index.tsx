@@ -1,10 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { MemoBoard } from "@/components/memo/memo-board";
+import { MemoList } from "@/components/memo/memo-list";
 
 export const Route = createFileRoute("/_app/")({
-  component: MemoBoardPage,
+  component: MemoListPage,
 });
 
-function MemoBoardPage() {
-  return <MemoBoard />;
+function MemoListPage() {
+  return <MemoList />;
 }

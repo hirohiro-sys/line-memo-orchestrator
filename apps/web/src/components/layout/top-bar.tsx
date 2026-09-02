@@ -1,9 +1,9 @@
 import { Menu } from "lucide-react";
 
-const PAGE_META: Record<string, { title: string; subtitle: string }> = {
-  "/": { title: "メモボード", subtitle: "メモの検索・追加・削除" },
-  "/line-bot": { title: "LINE Bot", subtitle: "Botの動作とタグ分類ルール" },
-  "/settings": { title: "設定", subtitle: "通知・外観・アカウントの管理" },
+const PAGE_TITLES: Record<string, string> = {
+  "/": "メモ一覧",
+  "/line-bot": "LINE Bot",
+  "/settings": "設定",
 };
 
 export function TopBar({
@@ -13,7 +13,7 @@ export function TopBar({
   pathname: string;
   onMenuClick: () => void;
 }) {
-  const meta = PAGE_META[pathname] ?? PAGE_META["/"];
+  const title = PAGE_TITLES[pathname] ?? PAGE_TITLES["/"];
 
   return (
     <header className="sticky top-0 z-10 flex h-16 items-center gap-3 border-b border-border bg-paper-warmth px-4 md:px-8">
@@ -25,10 +25,9 @@ export function TopBar({
       >
         <Menu className="size-5" />
       </button>
-      <div className="min-w-0 flex-1">
-        <h2 className="truncate text-lg font-semibold text-ink-black">{meta.title}</h2>
-        <p className="truncate text-caption text-ink-black/40">{meta.subtitle}</p>
-      </div>
+      <h2 className="min-w-0 flex-1 truncate text-lg font-semibold text-ink-black">
+        {title}
+      </h2>
     </header>
   );
 }
