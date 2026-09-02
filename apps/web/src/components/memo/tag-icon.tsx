@@ -1,4 +1,4 @@
-import { Bookmark, Image as ImageIcon, MessageCircle } from "lucide-react";
+import { Image as ImageIcon, Link2, Type } from "lucide-react";
 
 export function TagIcon({
   name,
@@ -7,7 +7,7 @@ export function TagIcon({
   name: string;
   className?: string;
 }) {
-  if (name === "Bookmark") return <Bookmark className={className} />;
+  if (name === "Link2") return <Link2 className={className} />;
   if (name === "Image") return <ImageIcon className={className} />;
-  return <MessageCircle className={className} />;
+  return <Type className={className} />;
 }

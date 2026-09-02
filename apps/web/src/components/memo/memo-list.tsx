@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { FileText, Plus, Search, X } from "lucide-react";
+import { Inbox, Plus, Search, X } from "lucide-react";
 import type { Memo, MemoTag } from "@repo/shared";
 import { createMemo, deleteMemo, fetchMemos } from "@/lib/api";
 import { classifyMessage, detectMediaType } from "@/lib/classify";
@@ -81,26 +81,26 @@ export function MemoList() {
   }
 
   const chipBase =
-    "rounded-xl px-3.5 py-2 text-[13px] font-medium transition-colors duration-200";
+    "rounded-md px-2.5 py-1.5 text-[12px] transition-colors duration-150";
 
   return (
     <div className="p-4 md:p-7">
       <div className="mb-5 flex flex-col gap-3">
         <div className="flex items-center gap-2">
           <div className="relative max-w-md flex-1">
-            <Search className="absolute top-1/2 left-3.5 size-4 -translate-y-1/2 text-ink-black/40" />
+            <Search className="absolute top-1/2 left-3 size-3.5 -translate-y-1/2 text-muted-foreground" />
             <input
               type="search"
               value={search}
               onChange={(event) => setSearch(event.target.value)}
               placeholder="メモを検索..."
-              className="w-full rounded-lg border border-border bg-pure-white py-2.5 pr-9 pl-10 text-body-sm text-ink-black outline-none transition-colors duration-200 placeholder:text-ink-black/40 focus:border-notion-blue"
+              className="w-full rounded-md border border-border bg-card py-2 pr-8 pl-9 text-body-sm text-foreground outline-none transition-colors duration-150 placeholder:text-muted-foreground focus:border-foreground"
             />
             {search && (
               <button
                 type="button"
                 onClick={() => setSearch("")}
-                className="absolute top-1/2 right-3 -translate-y-1/2 text-ink-black/40 transition-colors duration-200 hover:text-ink-black"
+                className="absolute top-1/2 right-2.5 -translate-y-1/2 text-muted-foreground transition-colors duration-150 hover:text-foreground"
                 aria-label="検索をクリア"
               >
                 <X className="size-4" />
@@ -112,8 +112,8 @@ export function MemoList() {
             onClick={() => setShowAdd((open) => !open)}
             className={
               showAdd
-                ? "flex shrink-0 items-center gap-1.5 rounded-lg border border-border bg-pure-white px-[15px] py-1.5 text-body-sm font-medium text-ink-black/90 transition-colors duration-200 hover:bg-paper-warmth"
-                : "flex shrink-0 items-center gap-1.5 rounded-lg bg-notion-blue px-[15px] py-1.5 text-body-sm font-medium text-pure-white transition-opacity duration-200 hover:opacity-90"
+                ? "flex shrink-0 items-center gap-1.5 rounded-md border border-border bg-card px-3 py-2 text-body-sm text-foreground transition-colors duration-150 hover:bg-muted"
+                : "flex shrink-0 items-center gap-1.5 rounded-md bg-primary px-3 py-2 text-body-sm text-primary-foreground transition-opacity duration-150 hover:opacity-90"
             }
           >
             <Plus className="size-4" /> 追加
@@ -126,12 +126,12 @@ export function MemoList() {
             onClick={() => setFilter("all")}
             className={`${chipBase} ${
               filter === "all"
-                ? "bg-sky-tint text-notion-blue"
-                : "border border-border bg-pure-white text-ink-black/60 hover:text-ink-black"
+                ? "bg-foreground text-background"
+                : "border border-border bg-card text-muted-foreground hover:text-foreground"
             }`}
           >
             すべて{" "}
-            <span className="ml-0.5 text-[10px] text-ink-black/40">
+            <span className="ml-0.5 text-[11px] tabular-nums opacity-60">
               {memos.length}
             </span>
           </button>
@@ -145,13 +145,13 @@ export function MemoList() {
                 onClick={() => setFilter(tag)}
                 className={`${chipBase} flex items-center gap-1.5 ${
                   active
-                    ? meta.className
-                    : "border border-border bg-pure-white text-ink-black/60 hover:text-ink-black"
+                    ? "bg-foreground text-background"
+                    : "border border-border bg-card text-muted-foreground hover:text-foreground"
                 }`}
               >
                 <TagIcon name={meta.icon} className="size-3.5" />
                 {meta.label}
-                <span className="rounded-full bg-pure-white/70 px-1.5 text-[10px] font-semibold text-ink-black/40">
+                <span className="text-[11px] tabular-nums opacity-60">
                   {tagCounts[tag]}
                 </span>
               </button>
@@ -161,28 +161,26 @@ export function MemoList() {
       </div>
 
       {showAdd && (
-        <div className="mb-5 rounded-xl border border-border bg-pure-white p-6">
-          <h3 className="mb-3 flex items-center gap-2 text-body-sm font-semibold text-ink-black">
-            <Plus className="size-4 text-notion-blue" /> 新規メモ
+        <div className="mb-5 rounded-lg border border-border bg-card p-5">
+          <h3 className="mb-3 text-body-sm font-medium text-foreground">
+            新規メモ
           </h3>
           <textarea
             value={newContent}
             onChange={(event) => setNewContent(event.target.value)}
             placeholder="メモ内容を入力... URLは自動的にTechタグになります"
-            className="mb-3 min-h-20 w-full resize-y rounded-lg border border-border bg-pure-white px-3.5 py-2.5 text-body-sm text-ink-black outline-none transition-colors duration-200 placeholder:text-ink-black/40 focus:border-notion-blue"
+            className="mb-3 min-h-20 w-full resize-y rounded-md border border-border bg-card px-3 py-2 text-body-sm text-foreground outline-none transition-colors duration-150 placeholder:text-muted-foreground focus:border-foreground"
             autoFocus
           />
           <div className="flex flex-wrap items-center gap-2">
-            <span className="text-caption font-medium text-ink-black/60">
-              タグ:
-            </span>
+            <span className="text-caption text-muted-foreground">タグ</span>
             <button
               type="button"
               onClick={() => setNewTag("auto")}
-              className={`rounded-lg px-3 py-1.5 text-caption font-medium transition-colors duration-200 ${
+              className={`rounded-md px-2.5 py-1 text-caption transition-colors duration-150 ${
                 newTag === "auto"
-                  ? "bg-sky-tint text-notion-blue"
-                  : "bg-paper-warmth text-ink-black/60"
+                  ? "bg-foreground text-background"
+                  : "bg-muted text-muted-foreground"
               }`}
             >
               自動判定
@@ -195,8 +193,10 @@ export function MemoList() {
                   key={tag}
                   type="button"
                   onClick={() => setNewTag(tag)}
-                  className={`flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-caption font-medium transition-colors duration-200 ${
-                    active ? meta.className : "bg-paper-warmth text-ink-black/60"
+                  className={`flex items-center gap-1.5 rounded-md px-2.5 py-1 text-caption transition-colors duration-150 ${
+                    active
+                      ? "bg-foreground text-background"
+                      : "bg-muted text-muted-foreground"
                   }`}
                 >
                   <TagIcon name={meta.icon} className="size-3" /> {meta.label}
@@ -210,7 +210,7 @@ export function MemoList() {
                   setShowAdd(false);
                   setNewContent("");
                 }}
-                className="rounded-lg px-[15px] py-1.5 text-body-sm font-medium text-ink-black/95 transition-colors duration-200 hover:bg-paper-warmth"
+                className="rounded-md px-3 py-1.5 text-body-sm text-muted-foreground transition-colors duration-150 hover:bg-muted hover:text-foreground"
               >
                 キャンセル
               </button>
@@ -218,7 +218,7 @@ export function MemoList() {
                 type="button"
                 onClick={handleAdd}
                 disabled={!newContent.trim() || createMutation.isPending}
-                className="rounded-lg bg-notion-blue px-[15px] py-1.5 text-body-sm font-medium text-pure-white transition-opacity duration-200 hover:opacity-90 disabled:opacity-50"
+                className="rounded-md bg-primary px-3 py-1.5 text-body-sm text-primary-foreground transition-opacity duration-150 hover:opacity-90 disabled:opacity-50"
               >
                 保存
               </button>
@@ -228,23 +228,21 @@ export function MemoList() {
       )}
 
       {memosQuery.isPending && (
-        <p className="py-20 text-center text-body-sm text-ink-black/40">
+        <p className="py-16 text-center text-body-sm text-muted-foreground">
           読み込み中...
         </p>
       )}
 
       {memosQuery.isError && (
-        <p className="py-20 text-center text-body-sm text-coral">
+        <p className="py-16 text-center text-body-sm text-destructive">
           メモの取得に失敗しました
         </p>
       )}
 
       {memosQuery.isSuccess && filtered.length === 0 && (
-        <div className="py-20 text-center">
-          <div className="mx-auto mb-4 flex size-16 items-center justify-center rounded-xl bg-paper-warmth">
-            <FileText className="size-8 text-ink-black/20" />
-          </div>
-          <p className="text-body-sm font-medium text-ink-black/40">
+        <div className="py-16 text-center">
+          <Inbox className="mx-auto mb-3 size-5 text-muted-foreground" />
+          <p className="text-body-sm text-muted-foreground">
             {search ? "検索結果が見つかりません" : "まだメモがありません"}
           </p>
         </div>

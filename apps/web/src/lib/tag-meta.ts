@@ -1,9 +1,9 @@
-import { Bookmark, Image as ImageIcon, MessageCircle } from "lucide-react";
+import { Image as ImageIcon, Link2, Type } from "lucide-react";
 import type { MemoTag } from "@repo/shared";
 
 const ICON_MAP = {
-  MessageCircle,
-  Bookmark,
+  Type,
+  Link2,
   Image: ImageIcon,
 } as const;
 
@@ -26,17 +26,17 @@ export const TAG_META: Record<
     id: "tweet",
     label: "つぶやき",
     hashtag: "#tweet",
-    icon: "MessageCircle",
+    icon: "Type",
     description: "思ったこと・つぶやき・テキストメモ",
-    className: "bg-sky-tint text-signal-blue",
+    className: "border border-border bg-muted text-foreground",
   },
   tech: {
     id: "tech",
     label: "Tech",
     hashtag: "#tech",
-    icon: "Bookmark",
+    icon: "Link2",
     description: "URL・技術記事・リソースの保存",
-    className: "bg-sky-tint text-notion-blue",
+    className: "border border-border bg-muted text-foreground",
   },
   other: {
     id: "other",
@@ -44,10 +44,10 @@ export const TAG_META: Record<
     hashtag: "#other",
     icon: "Image",
     description: "画像メモ・その他",
-    className: "bg-paper-warmth text-stone",
+    className: "border border-border bg-muted text-foreground",
   },
 };
 
 export function getTagIcon(iconName: string) {
-  return ICON_MAP[iconName as keyof typeof ICON_MAP] ?? MessageCircle;
+  return ICON_MAP[iconName as keyof typeof ICON_MAP] ?? Type;
 }

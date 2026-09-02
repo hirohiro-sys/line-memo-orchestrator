@@ -9,15 +9,15 @@ export function ToggleSwitch({
     <button
       type="button"
       onClick={() => onChange(!checked)}
-      className={`relative h-6 w-11 shrink-0 rounded-full transition-colors duration-200 ${
-        checked ? "bg-notion-blue" : "bg-ink-black/20"
+      className={`relative h-5 w-9 shrink-0 rounded-full transition-colors duration-150 ${
+        checked ? "bg-foreground" : "bg-border"
       }`}
       aria-pressed={checked}
       aria-label={checked ? "オン" : "オフ"}
     >
       <span
-        className={`absolute top-0.5 left-0.5 size-5 rounded-full bg-pure-white transition-transform duration-200 ${
-          checked ? "translate-x-5" : ""
+        className={`absolute top-0.5 left-0.5 size-4 rounded-full bg-background transition-transform duration-150 ${
+          checked ? "translate-x-4" : ""
         }`}
       />
     </button>

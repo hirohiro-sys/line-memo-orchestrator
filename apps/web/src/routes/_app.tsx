@@ -31,7 +31,7 @@ function AppLayout() {
   }, []);
 
   return (
-    <div className="flex min-h-screen bg-paper-warmth">
+    <div className="flex min-h-screen bg-background">
       <Sidebar
         user={user}
         mobileOpen={mobileOpen}
@@ -42,7 +42,7 @@ function AppLayout() {
           pathname={pathname}
           onMenuClick={() => setMobileOpen(true)}
         />
-        <main className="min-h-[calc(100vh-64px)]">
+        <main className="min-h-[calc(100vh-56px)]">
           <Outlet />
         </main>
       </div>
