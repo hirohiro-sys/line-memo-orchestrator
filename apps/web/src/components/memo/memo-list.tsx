@@ -1,7 +1,7 @@
-import { useMemo, useState } from "react";
+import type { Memo, MemoTag } from "@repo/shared";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Inbox, Plus, Search, X } from "lucide-react";
-import type { Memo, MemoTag } from "@repo/shared";
+import { useMemo, useState } from "react";
 import { createMemo, deleteMemo, fetchMemos } from "@/lib/api";
 import { classifyMessage, detectMediaType } from "@/lib/classify";
 import { TAG_META, TAG_ORDER } from "@/lib/tag-meta";
@@ -170,6 +170,7 @@ export function MemoList() {
             onChange={(event) => setNewContent(event.target.value)}
             placeholder="メモ内容を入力... URLは自動的にTechタグになります"
             className="mb-3 min-h-20 w-full resize-y rounded-md border border-border bg-card px-3 py-2 text-body-sm text-foreground outline-none transition-colors duration-150 placeholder:text-muted-foreground focus:border-foreground"
+            // biome-ignore lint/a11y/noAutofocus: the form is opened by an explicit user action
             autoFocus
           />
           <div className="flex flex-wrap items-center gap-2">

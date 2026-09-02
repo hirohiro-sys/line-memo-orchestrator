@@ -1,5 +1,5 @@
-import { useState, type FormEvent } from "react";
 import { createFileRoute, redirect, useNavigate } from "@tanstack/react-router";
+import { type FormEvent, useState } from "react";
 import { fetchMe, login } from "@/lib/api";
 import { DEMO_LOGIN } from "@/mocks/data";
 
@@ -89,9 +89,7 @@ function LoginPage() {
             />
           </div>
 
-          {error && (
-            <p className="text-caption text-destructive">{error}</p>
-          )}
+          {error && <p className="text-caption text-destructive">{error}</p>}
 
           <button
             type="submit"

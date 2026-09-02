@@ -1,5 +1,5 @@
-import { Image as ImageIcon, Link2, Type } from "lucide-react";
 import type { MemoTag } from "@repo/shared";
+import { Image as ImageIcon, Link2, Type } from "lucide-react";
 
 const ICON_MAP = {
   Type,

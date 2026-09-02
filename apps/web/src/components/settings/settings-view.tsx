@@ -1,18 +1,18 @@
-import { useState } from "react";
+import type { User as AppUser } from "@repo/shared";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
 import { LogOut } from "lucide-react";
-import type { User as AppUser } from "@repo/shared";
-import { ToggleSwitch } from "@/components/toggle-switch";
+import { useState } from "react";
 import { TagIcon } from "@/components/memo/tag-icon";
+import { ToggleSwitch } from "@/components/toggle-switch";
 import {
   fetchMemos,
   fetchNotifications,
   logout,
   updateNotifications,
 } from "@/lib/api";
-import { applyTheme, getStoredTheme } from "@/lib/theme";
 import { TAG_META, TAG_ORDER, WEEKDAYS } from "@/lib/tag-meta";
+import { applyTheme, getStoredTheme } from "@/lib/theme";
 
 export function SettingsView({ user }: { user: AppUser }) {
   const navigate = useNavigate();
@@ -163,9 +163,7 @@ export function SettingsView({ user }: { user: AppUser }) {
             <span className="text-body-sm text-foreground">{user.name}</span>
           </div>
           <div className="flex items-center justify-between border-b border-border py-3">
-            <span className="text-body-sm text-muted-foreground">
-              LINE連携
-            </span>
+            <span className="text-body-sm text-muted-foreground">LINE連携</span>
             <span className="text-body-sm text-foreground">
               {user.lineConnected ? "連携済み" : "未連携"}
             </span>

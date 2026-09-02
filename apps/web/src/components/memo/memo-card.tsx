@@ -1,5 +1,5 @@
-import { Clock, ExternalLink, Image as ImageIcon, Trash2 } from "lucide-react";
 import type { Memo } from "@repo/shared";
+import { Clock, ExternalLink, Image as ImageIcon, Trash2 } from "lucide-react";
 import { formatDate } from "@/lib/format";
 import { TagBadge } from "./tag-badge";
 

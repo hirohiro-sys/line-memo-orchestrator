@@ -1,8 +1,8 @@
-import { Link, useNavigate } from "@tanstack/react-router";
+import type { User } from "@repo/shared";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { Link, useNavigate } from "@tanstack/react-router";
 import { Inbox, LogOut, Settings2, X } from "lucide-react";
 import { fetchMemos, fetchNotifications, logout } from "@/lib/api";
-import type { User } from "@repo/shared";
 
 const NAV_ITEMS = [
   { to: "/", label: "メモ一覧", icon: Inbox, exact: true },

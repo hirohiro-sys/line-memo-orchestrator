@@ -1,10 +1,10 @@
-import { useEffect, useState } from "react";
 import {
-  Outlet,
   createFileRoute,
+  Outlet,
   redirect,
   useRouterState,
 } from "@tanstack/react-router";
+import { useEffect, useState } from "react";
 import { Sidebar } from "@/components/layout/sidebar";
 import { TopBar } from "@/components/layout/top-bar";
 import { fetchMe } from "@/lib/api";
@@ -38,10 +38,7 @@ function AppLayout() {
         onCloseMobile={() => setMobileOpen(false)}
       />
       <div className="min-w-0 flex-1">
-        <TopBar
-          pathname={pathname}
-          onMenuClick={() => setMobileOpen(true)}
-        />
+        <TopBar pathname={pathname} onMenuClick={() => setMobileOpen(true)} />
         <main className="min-h-[calc(100vh-56px)]">
           <Outlet />
         </main>

@@ -1,17 +1,17 @@
-import { http, HttpResponse } from "msw";
 import {
   createMemoRequestSchema,
   healthResponseSchema,
   loginRequestSchema,
+  type Memo,
   memoListResponseSchema,
   memoSchema,
+  type NotificationSettings,
   notificationSettingsSchema,
+  type User,
   updateNotificationSettingsRequestSchema,
   userSchema,
-  type Memo,
-  type NotificationSettings,
-  type User,
 } from "@repo/shared";
+import { HttpResponse, http } from "msw";
 import {
   DEFAULT_NOTIFICATIONS,
   DEMO_LOGIN,
@@ -34,7 +34,10 @@ export const handlers = [
 
   http.post("/api/auth/login", async ({ request }) => {
     const body = loginRequestSchema.parse(await request.json());
-    if (body.email === DEMO_LOGIN.email && body.password === DEMO_LOGIN.password) {
+    if (
+      body.email === DEMO_LOGIN.email &&
+      body.password === DEMO_LOGIN.password
+    ) {
       session = MOCK_USER;
       return HttpResponse.json(userSchema.parse(session));
     }
