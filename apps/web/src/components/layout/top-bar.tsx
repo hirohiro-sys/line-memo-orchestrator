@@ -2,7 +2,6 @@ import { Menu } from "lucide-react";
 
 const PAGE_TITLES: Record<string, string> = {
   "/": "メモ一覧",
-  "/line-bot": "LINE Bot",
   "/settings": "設定",
 };
 

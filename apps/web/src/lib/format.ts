@@ -9,8 +9,3 @@ export function formatDate(iso: string): string {
   if (days < 7) return `${days}日前`;
   return `${date.getMonth() + 1}月${date.getDate()}日`;
 }
-
-export function formatTime(iso: string): string {
-  const date = new Date(iso);
-  return `${String(date.getHours()).padStart(2, "0")}:${String(date.getMinutes()).padStart(2, "0")}`;
-}
