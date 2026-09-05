@@ -1,6 +1,6 @@
 ---
 name: Design Doc
-about: 機能・調査を Design Doc 形式で書く
+about: ちゃんと理解した上で実装したいコア機能など用
 title: ""
 labels: []
 assignees: []
