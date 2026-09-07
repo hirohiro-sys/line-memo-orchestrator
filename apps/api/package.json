@@ -7,8 +7,8 @@
     "deploy": "wrangler deploy",
     "typecheck": "tsc --noEmit",
     "db:generate": "drizzle-kit generate",
-    "db:migrate:local": "wrangler d1 migrations apply memohub --local",
-    "db:migrate:remote": "wrangler d1 migrations apply memohub --remote"
+    "db:migrate:local": "wrangler d1 migrations apply line-memo-orchestrator --local",
+    "db:migrate:remote": "wrangler d1 migrations apply line-memo-orchestrator --remote"
   },
   "dependencies": {
     "@repo/shared": "workspace:*",
