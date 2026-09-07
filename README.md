@@ -12,4 +12,5 @@ LINEを活用した個人用のインタースティシャルジャーナリン�
 ...
 
 ### セットアップ手順
-...
+
+バックエンド（Workers / D1 / R2）は [docs/backend-setup.md](docs/backend-setup.md) を参照。
