@@ -1,0 +1,24 @@
+{
+  "name": "@repo/api",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "wrangler dev --port 8787",
+    "deploy": "wrangler deploy",
+    "typecheck": "tsc --noEmit",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate:local": "wrangler d1 migrations apply line-memo-orchestrator --local",
+    "db:migrate:remote": "wrangler d1 migrations apply line-memo-orchestrator --remote"
+  },
+  "dependencies": {
+    "@repo/shared": "workspace:*",
+    "drizzle-orm": "^0.44.7",
+    "hono": "^4.13.5"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^5.20260907.1",
+    "drizzle-kit": "^0.31.6",
+    "typescript": "^6.0.3",
+    "wrangler": "^4.40.3"
+  }
+}

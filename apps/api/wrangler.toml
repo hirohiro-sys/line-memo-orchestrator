@@ -1,0 +1,14 @@
+name = "line-memo-orchestrator"
+main = "src/index.ts"
+compatibility_date = "2024-09-01"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "line-memo-orchestrator"
+# リモート作成後に wrangler d1 create line-memo-orchestrator の database_id で上書きする
+database_id = "52233bb7-9a0f-4385-918d-54616c7338a2"
+migrations_dir = "migrations"
+
+[[r2_buckets]]
+binding = "MEDIA"
+bucket_name = "line-memo-orchestrator-media"
