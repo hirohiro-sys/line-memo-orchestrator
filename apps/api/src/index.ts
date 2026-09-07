@@ -1,16 +1,16 @@
-import { serve } from "@hono/node-server";
 import { healthResponseSchema } from "@repo/shared";
 import { Hono } from "hono";
 
-const app = new Hono();
+type Env = {
+  DB: D1Database;
+  MEDIA: R2Bucket;
+};
 
-app.get("/api/health", (c) => {
+const app = new Hono<{ Bindings: Env }>();
+
+app.get("/api/health", async (c) => {
+  await c.env.DB.prepare("SELECT 1").first();
   return c.json(healthResponseSchema.parse({ status: "ok" }));
 });
 
-serve({
-  fetch: app.fetch,
-  port: 8787,
-});
-
-console.log("api listening on http://127.0.0.1:8787");
+export default app;
