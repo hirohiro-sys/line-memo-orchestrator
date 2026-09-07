@@ -11,7 +11,8 @@
       "!**/routeTree.gen.ts",
       "!**/mockServiceWorker.js",
       "!**/pnpm-lock.yaml",
-      "!**/public/*.svg"
+      "!**/public/*.svg",
+      "!**/migrations/meta"
     ]
   },
   "formatter": {
