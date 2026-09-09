@@ -1,4 +1,3 @@
-import type { User as AppUser } from "@repo/shared";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
 import { LogOut } from "lucide-react";
@@ -14,7 +13,7 @@ import {
 import { TAG_META, TAG_ORDER, WEEKDAYS } from "@/lib/tag-meta";
 import { applyTheme, getStoredTheme } from "@/lib/theme";
 
-export function SettingsView({ user }: { user: AppUser }) {
+export function SettingsView() {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const memosQuery = useQuery({ queryKey: ["memos"], queryFn: fetchMemos });
@@ -150,24 +149,6 @@ export function SettingsView({ user }: { user: AppUser }) {
           アカウント
         </h3>
         <div className="border-t border-border">
-          <div className="flex items-center justify-between border-b border-border py-3">
-            <span className="text-body-sm text-muted-foreground">
-              メールアドレス
-            </span>
-            <span className="text-body-sm text-foreground">{user.email}</span>
-          </div>
-          <div className="flex items-center justify-between border-b border-border py-3">
-            <span className="text-body-sm text-muted-foreground">
-              ユーザー名
-            </span>
-            <span className="text-body-sm text-foreground">{user.name}</span>
-          </div>
-          <div className="flex items-center justify-between border-b border-border py-3">
-            <span className="text-body-sm text-muted-foreground">LINE連携</span>
-            <span className="text-body-sm text-foreground">
-              {user.lineConnected ? "連携済み" : "未連携"}
-            </span>
-          </div>
           <div className="flex items-center justify-between py-3">
             <span className="text-body-sm text-muted-foreground">メモ総数</span>
             <span className="text-body-sm tabular-nums text-foreground">

@@ -10,9 +10,6 @@ export const DEMO_LOGIN = {
 
 export const MOCK_USER: User = {
   id: "u1",
-  email: DEMO_LOGIN.email,
-  name: "Me",
-  lineConnected: true,
 };
 
 export const DEFAULT_NOTIFICATIONS: NotificationSettings = {

@@ -1,7 +1,6 @@
 import {
   createMemoRequestSchema,
   healthResponseSchema,
-  loginRequestSchema,
   type Memo,
   memoListResponseSchema,
   memoSchema,
@@ -33,7 +32,10 @@ export const handlers = [
   }),
 
   http.post("/api/auth/login", async ({ request }) => {
-    const body = loginRequestSchema.parse(await request.json());
+    const body = (await request.json()) as {
+      email?: string;
+      password?: string;
+    };
     if (
       body.email === DEMO_LOGIN.email &&
       body.password === DEMO_LOGIN.password

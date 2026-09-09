@@ -1,7 +1,6 @@
 import {
   type CreateMemoRequest,
   createMemoRequestSchema,
-  loginRequestSchema,
   type Memo,
   type MemoListResponse,
   memoListResponseSchema,
@@ -25,7 +24,7 @@ export async function login(email: string, password: string): Promise<User> {
   const res = await fetch("/api/auth/login", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(loginRequestSchema.parse({ email, password })),
+    body: JSON.stringify({ email, password }),
   });
   if (!res.ok) throw new Error("invalid credentials");
   return userSchema.parse(await res.json());
