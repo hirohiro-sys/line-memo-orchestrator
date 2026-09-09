@@ -24,6 +24,30 @@ pnpm install
 
 設定の正は [`apps/api/wrangler.toml`](../apps/api/wrangler.toml) です。`database_id` は秘密情報ではないので git に含めてよいです。`.dev.vars` と `.wrangler/` はコミットしないでください。
 
+## 環境変数
+
+ローカルは [`apps/api/.dev.vars.example`](../apps/api/.dev.vars.example) をコピーして [`apps/api/.dev.vars`](../apps/api/.dev.vars) を作り、値を入れる。
+
+```bash
+cp apps/api/.dev.vars.example apps/api/.dev.vars
+```
+
+| 変数 | 用途 |
+|------|------|
+| `LINE_CHANNEL_ID` | 認可 URL と IDトークン検証の audience |
+| `LINE_CHANNEL_SECRET` | 認可コードの交換。ブラウザに出さない |
+| `SESSION_SECRET` | JWT 署名。十分長いランダム値 |
+| `APP_URL` | ログイン後の戻り先。ローカルは `http://127.0.0.1:5173` |
+
+本番は同じ名前を `wrangler secret` で入れる。開発用バイパス用の変数は作らない。
+
+```bash
+pnpm --filter @repo/api exec wrangler secret put LINE_CHANNEL_ID
+pnpm --filter @repo/api exec wrangler secret put LINE_CHANNEL_SECRET
+pnpm --filter @repo/api exec wrangler secret put SESSION_SECRET
+pnpm --filter @repo/api exec wrangler secret put APP_URL
+```
+
 ## 日常の開発
 
 ```bash

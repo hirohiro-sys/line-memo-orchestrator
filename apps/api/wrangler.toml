@@ -2,6 +2,13 @@ name = "line-memo-orchestrator"
 main = "src/index.ts"
 compatibility_date = "2024-09-01"
 
+# LINE Login / session。値はリポジトリに置かない。
+# ローカル: .dev.vars / 本番: wrangler secret
+# LINE_CHANNEL_ID
+# LINE_CHANNEL_SECRET
+# SESSION_SECRET
+# APP_URL
+
 [[d1_databases]]
 binding = "DB"
 database_name = "line-memo-orchestrator"

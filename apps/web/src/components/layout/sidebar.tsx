@@ -90,13 +90,10 @@ export function Sidebar({
       <div className="border-t border-border px-3 py-3">
         <div className="flex items-center gap-2 px-1.5 py-1">
           <div className="flex size-7 items-center justify-center rounded-md bg-muted text-[11px] font-medium text-foreground">
-            {user.name.charAt(0).toUpperCase()}
+            {user.id.charAt(0).toUpperCase()}
           </div>
           <div className="min-w-0 flex-1">
-            <p className="truncate text-[12px] text-foreground">{user.email}</p>
-            <p className="text-[11px] text-muted-foreground">
-              {user.lineConnected ? "LINE連携済み" : ""}
-            </p>
+            <p className="truncate text-[12px] text-foreground">ログイン中</p>
           </div>
           <button
             type="button"

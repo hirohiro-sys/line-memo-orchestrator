@@ -1,0 +1,8 @@
+# コピーして .dev.vars を作り、値を入れる。
+#   cp apps/api/.dev.vars.example apps/api/.dev.vars
+# .dev.vars はコミットしない。
+
+LINE_CHANNEL_ID=
+LINE_CHANNEL_SECRET=
+SESSION_SECRET=
+APP_URL=http://127.0.0.1:5173

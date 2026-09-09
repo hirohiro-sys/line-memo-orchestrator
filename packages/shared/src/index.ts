@@ -19,9 +19,4 @@ export {
   type UpdateNotificationSettingsRequest,
   updateNotificationSettingsRequestSchema,
 } from "./notification";
-export {
-  type LoginRequest,
-  loginRequestSchema,
-  type User,
-  userSchema,
-} from "./user";
+export { type User, userSchema } from "./user";
