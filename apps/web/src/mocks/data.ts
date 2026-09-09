@@ -3,11 +3,6 @@ import type { Memo, NotificationSettings } from "@repo/shared";
 const minutesAgo = (minutes: number) =>
   new Date(Date.now() - minutes * 60 * 1000).toISOString();
 
-export const DEMO_LOGIN = {
-  email: "me@memohub.app",
-  password: "password",
-} as const;
-
 export const DEFAULT_NOTIFICATIONS: NotificationSettings = {
   techWeeklyEnabled: true,
   techWeeklyDay: 0,
