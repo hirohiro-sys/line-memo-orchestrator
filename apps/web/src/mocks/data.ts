@@ -1,4 +1,4 @@
-import type { Memo, NotificationSettings, User } from "@repo/shared";
+import type { Memo, NotificationSettings } from "@repo/shared";
 
 const minutesAgo = (minutes: number) =>
   new Date(Date.now() - minutes * 60 * 1000).toISOString();
@@ -7,10 +7,6 @@ export const DEMO_LOGIN = {
   email: "me@memohub.app",
   password: "password",
 } as const;
-
-export const MOCK_USER: User = {
-  id: "u1",
-};
 
 export const DEFAULT_NOTIFICATIONS: NotificationSettings = {
   techWeeklyEnabled: true,

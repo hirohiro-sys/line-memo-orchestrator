@@ -1,71 +1,24 @@
 import {
   createMemoRequestSchema,
-  healthResponseSchema,
   type Memo,
   memoListResponseSchema,
   memoSchema,
   type NotificationSettings,
   notificationSettingsSchema,
-  type User,
   updateNotificationSettingsRequestSchema,
-  userSchema,
 } from "@repo/shared";
 import { HttpResponse, http } from "msw";
-import {
-  DEFAULT_NOTIFICATIONS,
-  DEMO_LOGIN,
-  INITIAL_MEMOS,
-  MOCK_USER,
-} from "./data";
+import { DEFAULT_NOTIFICATIONS, INITIAL_MEMOS } from "./data";
 
-let session: User | null = null;
 let memos: Memo[] = [...INITIAL_MEMOS];
 let notifications: NotificationSettings = { ...DEFAULT_NOTIFICATIONS };
 
-function unauthorized() {
-  return HttpResponse.json({ message: "unauthorized" }, { status: 401 });
-}
-
 export const handlers = [
-  http.get("/api/health", () => {
-    return HttpResponse.json(healthResponseSchema.parse({ status: "ok" }));
-  }),
-
-  http.post("/api/auth/login", async ({ request }) => {
-    const body = (await request.json()) as {
-      email?: string;
-      password?: string;
-    };
-    if (
-      body.email === DEMO_LOGIN.email &&
-      body.password === DEMO_LOGIN.password
-    ) {
-      session = MOCK_USER;
-      return HttpResponse.json(userSchema.parse(session));
-    }
-    return HttpResponse.json(
-      { message: "invalid credentials" },
-      { status: 401 },
-    );
-  }),
-
-  http.post("/api/auth/logout", () => {
-    session = null;
-    return new HttpResponse(null, { status: 204 });
-  }),
-
-  http.get("/api/me", () => {
-    if (!session) return unauthorized();
-    return HttpResponse.json(userSchema.parse(session));
-  }),
-
   http.get("/api/memos", () => {
-    if (!session) return unauthorized();
     return HttpResponse.json(memoListResponseSchema.parse({ items: memos }));
   }),
 
   http.post("/api/memos", async ({ request }) => {
-    if (!session) return unauthorized();
     const body = createMemoRequestSchema.parse(await request.json());
     const memo = memoSchema.parse({
       ...body,
@@ -77,7 +30,6 @@ export const handlers = [
   }),
 
   http.delete("/api/memos/:id", ({ params }) => {
-    if (!session) return unauthorized();
     const id = String(params.id);
     const exists = memos.some((memo) => memo.id === id);
     if (!exists) {
@@ -88,12 +40,10 @@ export const handlers = [
   }),
 
   http.get("/api/notifications", () => {
-    if (!session) return unauthorized();
     return HttpResponse.json(notificationSettingsSchema.parse(notifications));
   }),
 
   http.patch("/api/notifications", async ({ request }) => {
-    if (!session) return unauthorized();
     const body = updateNotificationSettingsRequestSchema.parse(
       await request.json(),
     );
