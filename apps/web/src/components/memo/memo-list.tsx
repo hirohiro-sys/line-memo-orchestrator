@@ -3,7 +3,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Inbox, Plus, Search, X } from "lucide-react";
 import { useMemo, useState } from "react";
 import { Button } from "@/components/ui/button";
-import { useToast } from "@/components/ui/toast";
+import { toast } from "@/components/ui/toast";
 import { createMemo, deleteMemo, fetchMemos } from "@/lib/api";
 import { TAG_META, TAG_ORDER } from "@/lib/tag-meta";
 import { MemoCard } from "./memo-card";
@@ -15,7 +15,6 @@ const EMPTY_MEMOS: Memo[] = [];
 
 export function MemoList() {
   const queryClient = useQueryClient();
-  const showToast = useToast();
   const memosQuery = useQuery({ queryKey: ["memos"], queryFn: fetchMemos });
   const memos = memosQuery.data?.items ?? EMPTY_MEMOS;
 
@@ -29,7 +28,7 @@ export function MemoList() {
       await queryClient.invalidateQueries({ queryKey: ["memos"] });
     },
     onError: () => {
-      showToast("保存できませんでした。");
+      toast.add({ title: "保存できませんでした。", type: "error" });
     },
   });
 
@@ -39,7 +38,7 @@ export function MemoList() {
       await queryClient.invalidateQueries({ queryKey: ["memos"] });
     },
     onError: () => {
-      showToast("削除できませんでした。");
+      toast.add({ title: "削除できませんでした。", type: "error" });
     },
   });
 
