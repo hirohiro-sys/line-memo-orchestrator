@@ -19,7 +19,7 @@ export function MemoCard({
   async function handleDelete() {
     try {
       await onDelete(memo.id);
-    } catch {
+    } finally {
       setConfirming(false);
     }
   }
