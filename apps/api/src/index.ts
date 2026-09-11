@@ -2,6 +2,7 @@ import { healthResponseSchema } from "@repo/shared";
 import { Hono } from "hono";
 import { auth } from "./auth";
 import type { Env } from "./env";
+import { lineWebhook } from "./line/webhook";
 
 const app = new Hono<{ Bindings: Env }>();
 
@@ -11,5 +12,6 @@ app.get("/api/health", async (c) => {
 });
 
 app.route("/", auth);
+app.route("/", lineWebhook);
 
 export default app;
