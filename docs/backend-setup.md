@@ -1,6 +1,6 @@
 # バックエンド環境
 
-`apps/api` は Cloudflare Workers（Hono + Drizzle + D1 + R2）です。公開 API は現状 `GET /api/health` のみです。フロントは開発時 MSW が `/api/*` を傍受します。
+`apps/api` は Cloudflare Workers（Hono + Drizzle + D1 + R2）です。公開 API は health、LINE Login、`POST /api/line/webhook`、ログイン必須のメモ閲覧です。開発時 MSW は通知だけを傍受し、`/api/memos` は Worker に届きます。
 
 ## 前提
 
@@ -36,14 +36,18 @@ cp apps/api/.dev.vars.example apps/api/.dev.vars
 |------|------|
 | `LINE_CHANNEL_ID` | 認可 URL と IDトークン検証の audience |
 | `LINE_CHANNEL_SECRET` | 認可コードの交換。ブラウザに出さない |
+| `LINE_MESSAGING_CHANNEL_SECRET` | Webhook 署名。Login の `LINE_CHANNEL_SECRET` と混ぜない |
+| `LINE_CHANNEL_ACCESS_TOKEN` | Reply と画像取得 |
 | `SESSION_SECRET` | JWT 署名。十分長いランダム値 |
 | `APP_URL` | ログイン後の戻り先。ローカルは `http://127.0.0.1:5173` |
 
-本番は同じ名前を `wrangler secret` で入れる。開発用バイパス用の変数は作らない。
+本番は同じ名前を `wrangler secret` で入れる。開発用バイパス用の変数は作らない。Messaging 用と Login 用を取り違えると、署名がすべて 400 になり何も残らない。
 
 ```bash
 pnpm --filter @repo/api exec wrangler secret put LINE_CHANNEL_ID
 pnpm --filter @repo/api exec wrangler secret put LINE_CHANNEL_SECRET
+pnpm --filter @repo/api exec wrangler secret put LINE_MESSAGING_CHANNEL_SECRET
+pnpm --filter @repo/api exec wrangler secret put LINE_CHANNEL_ACCESS_TOKEN
 pnpm --filter @repo/api exec wrangler secret put SESSION_SECRET
 pnpm --filter @repo/api exec wrangler secret put APP_URL
 ```
@@ -56,8 +60,28 @@ pnpm --filter @repo/api db:migrate:local
 pnpm dev
 ```
 
-- Web: `http://127.0.0.1:5173`（MSW あり）
+- Web: `http://127.0.0.1:5173`（通知だけ MSW）
 - API: `http://127.0.0.1:8787`
+
+`vite.config.ts` は `/api` を `:8787` にプロキシします。メモ一覧は Worker に届きます。
+
+LINE で残した行をローカル Web で見るには、[`apps/api/wrangler.toml`](../apps/api/wrangler.toml) の `DB` と `MEDIA` に `remote = true` を付ける。`pnpm dev` のコマンドはそのまま（Vite → `:8787`）。秘密は `.dev.vars`（`APP_URL=http://127.0.0.1:5173`）。Cookie は今と同じ `127.0.0.1`。許可ユーザーはリモート D1 に入っていること。
+
+```toml
+[[d1_databases]]
+binding = "DB"
+database_name = "line-memo-orchestrator"
+database_id = "…"
+migrations_dir = "migrations"
+remote = true
+
+[[r2_buckets]]
+binding = "MEDIA"
+bucket_name = "line-memo-orchestrator-media"
+remote = true
+```
+
+`remote = true` のとき、persist 付きのローカル Webhook curl は本番に行を付ける。署名だけ見るか、隔離するなら `wrangler dev --local`。
 
 API だけ起動する場合:
 
@@ -71,8 +95,6 @@ pnpm --filter @repo/api run dev
 curl http://127.0.0.1:8787/api/health
 # {"status":"ok"}
 ```
-
-`vite.config.ts` は `/api` を `:8787` にプロキシします。MSW を切るまでは Worker には届きません。
 
 ## DB コマンド
 
@@ -91,6 +113,22 @@ pnpm --filter @repo/api exec wrangler d1 execute line-memo-orchestrator --local 
 ```
 
 スキーマを変えたら `db:generate` → 生成 SQL を確認 → `db:migrate:local`。問題なければ `db:migrate:remote`。
+
+## LINE Messaging
+
+Login チャネルと**同じプロバイダー**の下に Messaging API チャネルを置く。別プロバイダーだと `userId` が変わり、`users.line_user_id` と一致しない。実体が同じチャネルなら、同じ値を Login 用と Messaging 用の変数に入れてよい。名前は必ず分ける。
+
+1. Basic settings の Channel secret → `LINE_MESSAGING_CHANNEL_SECRET`
+2. Messaging API タブの長期 Channel access token → `LINE_CHANNEL_ACCESS_TOKEN`
+3. 応答メッセージ・あいさつメッセージをオフにする。オンのままだと成功時も LINE が返信する
+4. グループ・複数人トークへの参加をコンソールで止める
+5. Webhook URL を `https://line-memo-orchestrator.hirohiro-sys.workers.dev/api/line/webhook` にする（本番オリジンが別ならそちら）
+6. Use webhook をオンにする。Verify が 200 になること
+7. Webhook redelivery をオンにする（200 を返せなかったとき用）
+
+パスは `POST /api/line/webhook`。
+
+許可ユーザーの追加は従来どおり、D1 の `users` への INSERT。友だち追加だけでは Web に入れない。Bot は `users` を自動作成しない。
 
 ## リモート（初回のみ）
 
