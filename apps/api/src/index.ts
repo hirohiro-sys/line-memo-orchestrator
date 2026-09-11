@@ -3,6 +3,7 @@ import { Hono } from "hono";
 import { auth } from "./auth";
 import type { Env } from "./env";
 import { lineWebhook } from "./line/webhook";
+import { memoRoutes } from "./memos";
 
 const app = new Hono<{ Bindings: Env }>();
 
@@ -13,5 +14,6 @@ app.get("/api/health", async (c) => {
 
 app.route("/", auth);
 app.route("/", lineWebhook);
+app.route("/", memoRoutes);
 
 export default app;
