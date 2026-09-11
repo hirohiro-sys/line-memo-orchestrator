@@ -1,21 +1,49 @@
-import type { Memo, MemoTag } from "@repo/shared";
-import { useQuery } from "@tanstack/react-query";
-import { Inbox, Search, X } from "lucide-react";
+import type { CreateMemoRequest, Memo, MemoTag } from "@repo/shared";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { Inbox, Plus, Search, X } from "lucide-react";
 import { useMemo, useState } from "react";
-import { fetchMemos } from "@/lib/api";
+import { Button } from "@/components/ui/button";
+import { useToast } from "@/components/ui/toast";
+import { createMemo, deleteMemo, fetchMemos } from "@/lib/api";
 import { TAG_META, TAG_ORDER } from "@/lib/tag-meta";
 import { MemoCard } from "./memo-card";
+import { MemoComposer } from "./memo-composer";
 import { TagIcon } from "./tag-icon";
 
 type FilterTag = MemoTag | "all";
 const EMPTY_MEMOS: Memo[] = [];
 
 export function MemoList() {
+  const queryClient = useQueryClient();
+  const showToast = useToast();
   const memosQuery = useQuery({ queryKey: ["memos"], queryFn: fetchMemos });
   const memos = memosQuery.data?.items ?? EMPTY_MEMOS;
 
   const [filter, setFilter] = useState<FilterTag>("all");
   const [search, setSearch] = useState("");
+  const [composing, setComposing] = useState(false);
+
+  const createMutation = useMutation({
+    mutationFn: createMemo,
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: ["memos"] });
+    },
+    onError: () => {
+      showToast("保存できませんでした。");
+    },
+  });
+
+  const deleteMutation = useMutation({
+    mutationFn: deleteMemo,
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: ["memos"] });
+    },
+    onError: () => {
+      showToast("削除できませんでした。");
+    },
+  });
+
+  const busy = createMutation.isPending || deleteMutation.isPending;
 
   const tagCounts = useMemo(() => {
     const acc: Record<MemoTag, number> = { tweet: 0, tech: 0, other: 0 };
@@ -37,31 +65,47 @@ export function MemoList() {
     return result;
   }, [memos, filter, search]);
 
+  async function handleCreate(input: CreateMemoRequest) {
+    await createMutation.mutateAsync(input);
+    setComposing(false);
+  }
+
   const chipBase =
     "rounded-md px-2.5 py-1.5 text-[12px] transition-colors duration-150";
 
   return (
     <div className="p-4 md:p-7">
       <div className="mb-5 flex flex-col gap-3">
-        <div className="relative max-w-md">
-          <Search className="absolute top-1/2 left-3 size-3.5 -translate-y-1/2 text-muted-foreground" />
-          <input
-            type="search"
-            value={search}
-            onChange={(event) => setSearch(event.target.value)}
-            placeholder="メモを検索..."
-            className="w-full rounded-md border border-border bg-card py-2 pr-8 pl-9 text-body-sm text-foreground outline-none transition-colors duration-150 placeholder:text-muted-foreground focus:border-foreground"
-          />
-          {search && (
-            <button
-              type="button"
-              onClick={() => setSearch("")}
-              className="absolute top-1/2 right-2.5 -translate-y-1/2 text-muted-foreground transition-colors duration-150 hover:text-foreground"
-              aria-label="検索をクリア"
-            >
-              <X className="size-4" />
-            </button>
-          )}
+        <div className="flex items-center gap-2">
+          <div className="relative max-w-md flex-1">
+            <Search className="absolute top-1/2 left-3 size-3.5 -translate-y-1/2 text-muted-foreground" />
+            <input
+              type="search"
+              value={search}
+              onChange={(event) => setSearch(event.target.value)}
+              placeholder="メモを検索..."
+              className="w-full rounded-md border border-border bg-card py-2 pr-8 pl-9 text-body-sm text-foreground outline-none transition-colors duration-150 placeholder:text-muted-foreground focus:border-foreground"
+            />
+            {search && (
+              <button
+                type="button"
+                onClick={() => setSearch("")}
+                className="absolute top-1/2 right-2.5 -translate-y-1/2 text-muted-foreground transition-colors duration-150 hover:text-foreground"
+                aria-label="検索をクリア"
+              >
+                <X className="size-4" />
+              </button>
+            )}
+          </div>
+          <Button
+            type="button"
+            size="sm"
+            disabled={busy || composing}
+            onClick={() => setComposing(true)}
+          >
+            <Plus className="size-3.5" />
+            追加
+          </Button>
         </div>
 
         <div className="flex flex-wrap items-center gap-2">
@@ -104,6 +148,14 @@ export function MemoList() {
         </div>
       </div>
 
+      {composing && (
+        <MemoComposer
+          busy={busy}
+          onSubmit={handleCreate}
+          onCancel={() => setComposing(false)}
+        />
+      )}
+
       {memosQuery.isPending && (
         <p className="py-16 text-center text-body-sm text-muted-foreground">
           読み込み中...
@@ -128,7 +180,12 @@ export function MemoList() {
       {memosQuery.isSuccess && filtered.length > 0 && (
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
           {filtered.map((memo) => (
-            <MemoCard key={memo.id} memo={memo} />
+            <MemoCard
+              key={memo.id}
+              memo={memo}
+              busy={busy}
+              onDelete={deleteMutation.mutateAsync}
+            />
           ))}
         </div>
       )}
