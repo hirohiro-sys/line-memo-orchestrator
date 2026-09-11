@@ -1,6 +1,10 @@
 import {
+  type CreateMemoRequest,
+  createMemoRequestSchema,
+  type Memo,
   type MemoListResponse,
   memoListResponseSchema,
+  memoSchema,
   type NotificationSettings,
   notificationSettingsSchema,
   type UpdateNotificationSettingsRequest,
@@ -29,6 +33,21 @@ export async function fetchMemos(): Promise<MemoListResponse> {
   const res = await apiFetch("/api/memos");
   if (!res.ok) throw new Error("failed to load memos");
   return memoListResponseSchema.parse(await res.json());
+}
+
+export async function createMemo(input: CreateMemoRequest): Promise<Memo> {
+  const res = await apiFetch("/api/memos", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(createMemoRequestSchema.parse(input)),
+  });
+  if (!res.ok) throw new Error("failed to create memo");
+  return memoSchema.parse(await res.json());
+}
+
+export async function deleteMemo(id: string): Promise<void> {
+  const res = await apiFetch(`/api/memos/${id}`, { method: "DELETE" });
+  if (!res.ok) throw new Error("failed to delete memo");
 }
 
 export async function fetchNotifications(): Promise<NotificationSettings> {
