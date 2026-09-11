@@ -1,15 +1,9 @@
 import type { Memo } from "@repo/shared";
-import { Clock, ExternalLink, Image as ImageIcon, Trash2 } from "lucide-react";
+import { Clock, ExternalLink } from "lucide-react";
 import { formatDate } from "@/lib/format";
 import { TagBadge } from "./tag-badge";
 
-export function MemoCard({
-  memo,
-  onDelete,
-}: {
-  memo: Memo;
-  onDelete: (id: string) => void;
-}) {
+export function MemoCard({ memo }: { memo: Memo }) {
   return (
     <article className="rounded-lg border border-border bg-card p-5">
       <div className="mb-2 flex items-start justify-between gap-3">
@@ -36,24 +30,18 @@ export function MemoCard({
         </a>
       )}
 
-      {memo.mediaType === "image" && (
-        <div className="mb-2.5 flex h-28 items-center justify-center rounded-md border border-dashed border-border bg-muted">
-          <ImageIcon className="size-5 text-muted-foreground" />
-        </div>
+      {memo.thumbnailUrl && (
+        <img
+          src={memo.thumbnailUrl}
+          alt=""
+          className="mb-2.5 h-28 w-full rounded-md object-cover"
+        />
       )}
 
-      <div className="flex items-center justify-between border-t border-border pt-2.5">
+      <div className="border-t border-border pt-2.5">
         <span className="text-[11px] text-muted-foreground">
           {memo.source === "line" ? "LINE" : "Web"}
         </span>
-        <button
-          type="button"
-          onClick={() => onDelete(memo.id)}
-          className="rounded-md p-1 text-muted-foreground transition-colors duration-150 hover:bg-muted hover:text-destructive"
-          aria-label="削除"
-        >
-          <Trash2 className="size-3.5" />
-        </button>
       </div>
     </article>
   );
