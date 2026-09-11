@@ -21,11 +21,7 @@ export const memoListResponseSchema = z.object({
 
 export const createMemoRequestSchema = z.object({
   tag: memoTagSchema,
-  content: z.string().min(1),
-  url: z.string().optional(),
-  thumbnailUrl: z.string().optional(),
-  mediaType: memoMediaTypeSchema,
-  source: memoSourceSchema,
+  content: z.string().trim().min(1),
 });
 
 export type MemoTag = z.infer<typeof memoTagSchema>;
