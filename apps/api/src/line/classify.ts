@@ -27,7 +27,7 @@ const URL_PATTERN = /^https?:\/\/\S+$/i;
 const LEADING_PERMITTED_TAG = /^(?:[#＃])(tweet|tech|other)(?![0-9A-Za-z])/i;
 const LEADING_HASH = /^[#＃]/;
 
-function detectMediaType(text: string): Exclude<MemoMediaType, "image"> {
+export function detectMediaType(text: string): Exclude<MemoMediaType, "image"> {
   return URL_PATTERN.test(text) ? "url" : "text";
 }
 
