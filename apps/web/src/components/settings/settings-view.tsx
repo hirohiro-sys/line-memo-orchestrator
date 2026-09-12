@@ -4,14 +4,22 @@ import { LogOut } from "lucide-react";
 import { useState } from "react";
 import { TagIcon } from "@/components/memo/tag-icon";
 import { ToggleSwitch } from "@/components/toggle-switch";
+import { Button } from "@/components/ui/button";
 import {
   fetchMemos,
   fetchNotifications,
   logout,
   updateNotifications,
 } from "@/lib/api";
-import { TAG_META, TAG_ORDER, WEEKDAYS } from "@/lib/tag-meta";
+import {
+  PILL_BASE,
+  PILL_IDLE,
+  TAG_META,
+  TAG_ORDER,
+  WEEKDAYS,
+} from "@/lib/tag-meta";
 import { applyTheme, getStoredTheme } from "@/lib/theme";
+import { cn } from "@/lib/utils";
 
 export function SettingsView() {
   const navigate = useNavigate();
@@ -47,10 +55,10 @@ export function SettingsView() {
   }
 
   return (
-    <div className="max-w-2xl space-y-8 p-4 md:p-8">
-      <section>
-        <h3 className="mb-1 text-[13px] font-medium text-foreground">通知</h3>
-        <p className="mb-4 text-body-sm text-muted-foreground">
+    <div className="mx-auto max-w-2xl space-y-6 p-4 md:p-8">
+      <section className="rounded-xl border border-border bg-card p-6">
+        <h3 className="mb-1 text-body-sm font-medium text-foreground">通知</h3>
+        <p className="mb-4 text-body-sm text-graphite">
           その週に保存したTechタグのリソースをLINEでまとめて通知します。
         </p>
 
@@ -58,8 +66,8 @@ export function SettingsView() {
           <div className="border-t border-border">
             <div className="flex items-start justify-between gap-3 py-4">
               <div>
-                <p className="text-[13px] text-foreground">Tech週次通知</p>
-                <p className="mt-0.5 text-[12px] text-muted-foreground">
+                <p className="text-body-sm text-foreground">Tech週次通知</p>
+                <p className="mt-0.5 text-caption text-stone">
                   今週保存した{techCount}件のTechメモをまとめて通知
                 </p>
               </div>
@@ -74,9 +82,7 @@ export function SettingsView() {
             {notifications.techWeeklyEnabled && (
               <div className="flex items-center gap-3 border-t border-border py-4">
                 <div className="flex-1">
-                  <p className="mb-1.5 text-[12px] text-muted-foreground">
-                    通知曜日
-                  </p>
+                  <p className="mb-1.5 text-caption text-stone">通知曜日</p>
                   <div className="flex flex-wrap gap-1">
                     {WEEKDAYS.map((day, index) => (
                       <button
@@ -85,11 +91,12 @@ export function SettingsView() {
                         onClick={() =>
                           notifyMutation.mutate({ techWeeklyDay: index })
                         }
-                        className={`size-8 rounded-md text-[11px] transition-colors duration-150 ${
+                        className={cn(
+                          "inline-flex size-8 items-center justify-center rounded-full text-caption font-medium transition-colors duration-200",
                           notifications.techWeeklyDay === index
-                            ? "bg-foreground text-background"
-                            : "border border-border text-muted-foreground hover:text-foreground"
-                        }`}
+                            ? "bg-sky-tint text-primary"
+                            : PILL_IDLE,
+                        )}
                       >
                         {day}
                       </button>
@@ -99,7 +106,7 @@ export function SettingsView() {
                 <div className="w-28">
                   <label
                     htmlFor="notify-time"
-                    className="mb-1.5 block text-[12px] text-muted-foreground"
+                    className="mb-1.5 block text-caption text-stone"
                   >
                     時刻
                   </label>
@@ -112,14 +119,14 @@ export function SettingsView() {
                         techWeeklyTime: event.target.value,
                       })
                     }
-                    className="w-full rounded-md border border-border bg-card px-2.5 py-1.5 text-center font-mono text-body-sm outline-none focus:border-foreground"
+                    className="w-full rounded-lg border border-border bg-background px-2.5 py-1.5 text-center font-mono text-body-sm outline-none transition-colors duration-200 focus:border-primary"
                   />
                 </div>
               </div>
             )}
 
             {notifications.techWeeklyEnabled && (
-              <p className="border-t border-border py-3 text-[12px] text-muted-foreground">
+              <p className="border-t border-border py-3 text-caption text-stone">
                 毎週{WEEKDAYS[notifications.techWeeklyDay]}曜日{" "}
                 {notifications.techWeeklyTime} にLINEへ通知されます
               </p>
@@ -128,15 +135,15 @@ export function SettingsView() {
         )}
       </section>
 
-      <section>
-        <h3 className="mb-1 text-[13px] font-medium text-foreground">外観</h3>
-        <p className="mb-4 text-body-sm text-muted-foreground">
+      <section className="rounded-xl border border-border bg-card p-6">
+        <h3 className="mb-1 text-body-sm font-medium text-foreground">外観</h3>
+        <p className="mb-4 text-body-sm text-graphite">
           ダークモードの切り替えができます。
         </p>
         <div className="flex items-center justify-between border-t border-border py-4">
           <div>
-            <p className="text-[13px] text-foreground">ダークモード</p>
-            <p className="text-[12px] text-muted-foreground">
+            <p className="text-body-sm text-foreground">ダークモード</p>
+            <p className="text-caption text-stone">
               現在: {theme === "dark" ? "オン" : "オフ"}
             </p>
           </div>
@@ -144,32 +151,33 @@ export function SettingsView() {
         </div>
       </section>
 
-      <section>
-        <h3 className="mb-4 text-[13px] font-medium text-foreground">
+      <section className="rounded-xl border border-border bg-card p-6">
+        <h3 className="mb-4 text-body-sm font-medium text-foreground">
           アカウント
         </h3>
         <div className="border-t border-border">
           <div className="flex items-center justify-between py-3">
-            <span className="text-body-sm text-muted-foreground">メモ総数</span>
+            <span className="text-body-sm text-stone">メモ総数</span>
             <span className="text-body-sm tabular-nums text-foreground">
               {memos.length}件
             </span>
           </div>
         </div>
         <div className="mt-2 flex justify-end pt-2">
-          <button
+          <Button
             type="button"
+            variant="ghost"
             onClick={() => void handleLogout()}
-            className="flex items-center gap-1.5 rounded-md px-2 py-1.5 text-body-sm text-muted-foreground transition-colors duration-150 hover:bg-muted hover:text-destructive"
+            className="text-stone hover:text-destructive"
           >
             <LogOut className="size-3.5" /> ログアウト
-          </button>
+          </Button>
         </div>
       </section>
 
-      <section>
-        <h3 className="mb-1 text-[13px] font-medium text-foreground">タグ</h3>
-        <p className="mb-4 text-body-sm text-muted-foreground">
+      <section className="rounded-xl border border-border bg-card p-6">
+        <h3 className="mb-1 text-body-sm font-medium text-foreground">タグ</h3>
+        <p className="mb-4 text-body-sm text-graphite">
           LINE Botで使用する3つのタグです。
         </p>
         <div className="divide-y divide-border border-t border-border">
@@ -178,22 +186,24 @@ export function SettingsView() {
             const count = memos.filter((memo) => memo.tag === tag).length;
             return (
               <div key={tag} className="flex items-center gap-3 py-3">
-                <TagIcon
-                  name={meta.icon}
-                  className="size-4 text-muted-foreground"
-                />
+                <span
+                  className={cn(
+                    "inline-flex size-8 items-center justify-center rounded-full",
+                    meta.className,
+                  )}
+                >
+                  <TagIcon name={meta.icon} className="size-3.5" />
+                </span>
                 <div className="flex-1">
-                  <p className="text-[13px] text-foreground">
+                  <p className="text-body-sm text-foreground">
                     {meta.label}{" "}
-                    <span className="font-mono text-[11px] text-muted-foreground">
+                    <span className="font-mono text-caption text-stone">
                       {meta.hashtag}
                     </span>
                   </p>
-                  <p className="text-[11px] text-muted-foreground">
-                    {meta.description}
-                  </p>
+                  <p className="text-caption text-stone">{meta.description}</p>
                 </div>
-                <span className="text-[12px] tabular-nums text-muted-foreground">
+                <span className="text-caption tabular-nums text-stone">
                   {count}件
                 </span>
               </div>
