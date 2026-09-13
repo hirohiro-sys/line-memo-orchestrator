@@ -2,6 +2,7 @@ import type { User } from "@repo/shared";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { Link, useNavigate, useRouterState } from "@tanstack/react-router";
 import { Inbox, LogOut, Settings2, X } from "lucide-react";
+import { BrandLockup } from "@/components/layout/brand-lockup";
 import { fetchMemos, fetchNotifications, logout } from "@/lib/api";
 import { cn } from "@/lib/utils";
 
@@ -43,9 +44,7 @@ export function Sidebar({
   const nav = (
     <>
       <div className="px-5 py-5">
-        <p className="text-[32px] leading-none font-bold tracking-tight text-foreground">
-          Memotion
-        </p>
+        <BrandLockup />
       </div>
 
       <nav className="flex-1 overflow-y-auto px-3 py-3">

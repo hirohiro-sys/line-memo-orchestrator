@@ -1,4 +1,5 @@
 import { createFileRoute, redirect } from "@tanstack/react-router";
+import { BrandLockup } from "@/components/layout/brand-lockup";
 import { Button } from "@/components/ui/button";
 import { fetchMe } from "@/lib/api";
 
@@ -31,9 +32,7 @@ function LoginPage() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
       <div className="w-full max-w-[360px] rounded-xl border border-border bg-card p-6">
-        <h1 className="text-[32px] leading-none font-bold tracking-tight text-foreground">
-          Memotion
-        </h1>
+        <BrandLockup as="h1" />
 
         <div className="mt-6 space-y-4">
           {message && (
