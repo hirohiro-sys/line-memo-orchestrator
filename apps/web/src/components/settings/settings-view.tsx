@@ -2,7 +2,6 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
 import { LogOut } from "lucide-react";
 import { useState } from "react";
-import { TagIcon } from "@/components/memo/tag-icon";
 import { ToggleSwitch } from "@/components/toggle-switch";
 import { Button } from "@/components/ui/button";
 import {
@@ -11,13 +10,7 @@ import {
   logout,
   updateNotifications,
 } from "@/lib/api";
-import {
-  PILL_BASE,
-  PILL_IDLE,
-  TAG_META,
-  TAG_ORDER,
-  WEEKDAYS,
-} from "@/lib/tag-meta";
+import { PILL_IDLE, TAG_META, TAG_ORDER, WEEKDAYS } from "@/lib/tag-meta";
 import { applyTheme, getStoredTheme } from "@/lib/theme";
 import { cn } from "@/lib/utils";
 
@@ -187,13 +180,8 @@ export function SettingsView() {
             return (
               <div key={tag} className="flex items-center gap-3 py-3">
                 <span
-                  className={cn(
-                    "inline-flex size-8 items-center justify-center rounded-full",
-                    meta.className,
-                  )}
-                >
-                  <TagIcon name={meta.icon} className="size-3.5" />
-                </span>
+                  className={cn("size-2.5 shrink-0 rounded-full", meta.className)}
+                />
                 <div className="flex-1">
                   <p className="text-body-sm text-foreground">
                     {meta.label}{" "}

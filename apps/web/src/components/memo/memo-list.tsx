@@ -9,7 +9,6 @@ import { PILL_BASE, PILL_IDLE, TAG_META, TAG_ORDER } from "@/lib/tag-meta";
 import { cn } from "@/lib/utils";
 import { MemoCard } from "./memo-card";
 import { MemoComposer } from "./memo-composer";
-import { TagIcon } from "./tag-icon";
 
 type FilterTag = MemoTag | "all";
 const EMPTY_MEMOS: Memo[] = [];
@@ -96,11 +95,14 @@ export function MemoList() {
           </div>
           <Button
             type="button"
+            variant="outline"
+            size="icon"
             disabled={busy || composing}
             onClick={() => setComposing(true)}
+            aria-label="追加"
+            className="border-foreground bg-foreground text-background hover:bg-foreground/90 hover:text-background"
           >
-            <Plus className="size-3.5" />
-            追加
+            <Plus className="size-4" />
           </Button>
         </div>
 
@@ -128,7 +130,6 @@ export function MemoList() {
                 onClick={() => setFilter(tag)}
                 className={cn(PILL_BASE, active ? meta.className : PILL_IDLE)}
               >
-                <TagIcon name={meta.icon} className="size-3.5" />
                 {meta.label}
                 <span className="text-caption tabular-nums opacity-60">
                   {tagCounts[tag]}

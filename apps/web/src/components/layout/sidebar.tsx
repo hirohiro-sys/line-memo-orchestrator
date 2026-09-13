@@ -1,8 +1,9 @@
 import type { User } from "@repo/shared";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { Link, useNavigate } from "@tanstack/react-router";
+import { Link, useNavigate, useRouterState } from "@tanstack/react-router";
 import { Inbox, LogOut, Settings2, X } from "lucide-react";
 import { fetchMemos, fetchNotifications, logout } from "@/lib/api";
+import { cn } from "@/lib/utils";
 
 const NAV_ITEMS = [
   { to: "/", label: "メモ一覧", icon: Inbox, exact: true },
@@ -19,6 +20,7 @@ export function Sidebar({
   onCloseMobile: () => void;
 }) {
   const navigate = useNavigate();
+  const pathname = useRouterState({ select: (s) => s.location.pathname });
   const queryClient = useQueryClient();
   const memos = useQuery({ queryKey: ["memos"], queryFn: fetchMemos });
   const notifications = useQuery({
@@ -51,17 +53,21 @@ export function Sidebar({
           {NAV_ITEMS.map((item) => {
             const Icon = item.icon;
             const badge = item.to === "/" ? memoCount : 0;
+            const isActive = item.exact
+              ? pathname === item.to
+              : pathname.startsWith(item.to);
             return (
               <Link
                 key={item.to}
                 to={item.to}
                 activeOptions={{ exact: item.exact }}
                 onClick={onCloseMobile}
-                className="relative flex w-full items-center gap-2.5 rounded-lg px-4 py-3 text-body-sm text-foreground/50 no-underline transition-colors duration-200 hover:bg-muted hover:text-foreground"
-                activeProps={{
-                  className:
-                    "bg-muted text-foreground hover:bg-muted hover:text-foreground",
-                }}
+                className={cn(
+                  "relative flex w-full items-center gap-2.5 rounded-lg px-4 py-3 text-body-sm no-underline transition-colors duration-200",
+                  isActive
+                    ? "bg-muted font-medium text-foreground"
+                    : "text-foreground/50 hover:bg-muted hover:text-foreground",
+                )}
               >
                 <Icon className="size-4" />
                 <span className="flex-1 text-left">{item.label}</span>

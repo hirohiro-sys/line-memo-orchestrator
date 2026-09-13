@@ -1,9 +1,9 @@
 import type { CreateMemoRequest, MemoTag } from "@repo/shared";
+import { SendHorizontal } from "lucide-react";
 import { type FormEvent, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { PILL_BASE, PILL_IDLE, TAG_META, TAG_ORDER } from "@/lib/tag-meta";
 import { cn } from "@/lib/utils";
-import { TagIcon } from "./tag-icon";
 
 export function MemoComposer({
   busy,
@@ -41,7 +41,6 @@ export function MemoComposer({
               onClick={() => setTag(option)}
               className={cn(PILL_BASE, active ? meta.className : PILL_IDLE)}
             >
-              <TagIcon name={meta.icon} className="size-3.5" />
               {meta.label}
             </button>
           );
@@ -60,8 +59,15 @@ export function MemoComposer({
         <Button type="button" variant="ghost" onClick={onCancel}>
           キャンセル
         </Button>
-        <Button type="submit" disabled={!canSubmit}>
-          追加
+        <Button
+          type="submit"
+          variant="outline"
+          size="icon"
+          disabled={!canSubmit}
+          aria-label="送信"
+          className="border-foreground bg-foreground text-background hover:bg-foreground/90 hover:text-background"
+        >
+          <SendHorizontal className="size-4" />
         </Button>
       </div>
     </form>

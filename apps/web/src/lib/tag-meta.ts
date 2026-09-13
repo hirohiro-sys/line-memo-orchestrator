@@ -1,11 +1,4 @@
 import type { MemoTag } from "@repo/shared";
-import { Image as ImageIcon, Link2, Type } from "lucide-react";
-
-const ICON_MAP = {
-  Type,
-  Link2,
-  Image: ImageIcon,
-} as const;
 
 export const TAG_ORDER: MemoTag[] = ["tweet", "tech", "other"];
 
@@ -23,7 +16,6 @@ export const TAG_META: Record<
     id: MemoTag;
     label: string;
     hashtag: string;
-    icon: keyof typeof ICON_MAP;
     description: string;
     className: string;
   }
@@ -32,28 +24,21 @@ export const TAG_META: Record<
     id: "tweet",
     label: "つぶやき",
     hashtag: "#tweet",
-    icon: "Type",
     description: "思ったこと・つぶやき・テキストメモ",
-    className: "bg-marigold text-foreground",
+    className: "bg-marigold/20 text-foreground",
   },
   tech: {
     id: "tech",
     label: "Tech",
     hashtag: "#tech",
-    icon: "Link2",
     description: "URL・技術記事・リソースの保存",
-    className: "bg-sky-tint text-foreground",
+    className: "bg-sky-wash/25 text-foreground",
   },
   other: {
     id: "other",
     label: "Other",
     hashtag: "#other",
-    icon: "Image",
     description: "画像メモ・その他",
-    className: "bg-saffron text-foreground",
+    className: "bg-mocha/25 text-foreground",
   },
 };
-
-export function getTagIcon(iconName: string) {
-  return ICON_MAP[iconName as keyof typeof ICON_MAP] ?? Type;
-}

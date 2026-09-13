@@ -24,7 +24,7 @@ export function TopBar({
       >
         <Menu className="size-4" />
       </button>
-      <h1 className="min-w-0 flex-1 truncate text-body font-medium text-foreground">
+      <h1 className="min-w-0 flex-1 truncate text-heading-sm font-semibold text-foreground">
         {title}
       </h1>
     </header>
