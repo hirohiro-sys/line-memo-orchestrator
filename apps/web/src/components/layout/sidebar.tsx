@@ -40,9 +40,10 @@ export function Sidebar({
 
   const nav = (
     <>
-      <div className="border-b border-border px-5 py-5">
-        <p className="text-heading-sm font-semibold text-foreground">MemoHub</p>
-        <p className="mt-1 text-caption text-stone">LINE連動メモ</p>
+      <div className="px-5 py-5">
+        <p className="text-[32px] leading-none font-bold tracking-tight text-foreground">
+          Memotion
+        </p>
       </div>
 
       <nav className="flex-1 overflow-y-auto px-3 py-3">
@@ -59,7 +60,7 @@ export function Sidebar({
                 className="relative flex w-full items-center gap-2.5 rounded-lg px-4 py-3 text-body-sm text-foreground/50 no-underline transition-colors duration-200 hover:bg-muted hover:text-foreground"
                 activeProps={{
                   className:
-                    "bg-sky-tint text-primary hover:bg-sky-tint hover:text-primary",
+                    "bg-muted text-foreground hover:bg-muted hover:text-foreground",
                 }}
               >
                 <Icon className="size-4" />

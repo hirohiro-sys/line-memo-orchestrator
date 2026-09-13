@@ -31,10 +31,9 @@ function LoginPage() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
       <div className="w-full max-w-[360px] rounded-xl border border-border bg-card p-6">
-        <h1 className="text-heading-sm font-semibold text-foreground">
-          MemoHub
+        <h1 className="text-[32px] leading-none font-bold tracking-tight text-foreground">
+          Memotion
         </h1>
-        <p className="mt-1 text-body-sm text-graphite">LINE連動メモ</p>
 
         <div className="mt-6 space-y-4">
           {message && (
