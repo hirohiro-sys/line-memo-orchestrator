@@ -39,7 +39,7 @@ function AppLayout() {
       />
       <div className="min-w-0 flex-1">
         <TopBar pathname={pathname} onMenuClick={() => setMobileOpen(true)} />
-        <main className="min-h-[calc(100vh-64px)]">
+        <main className="min-h-[calc(100vh-56px)]">
           <Outlet />
         </main>
       </div>

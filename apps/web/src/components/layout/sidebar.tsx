@@ -82,7 +82,7 @@ export function Sidebar({
         </div>
 
         <div className="mt-8 px-4">
-          <p className="mb-2 text-caption text-stone">今週の Tech</p>
+          <p className="mb-2 text-caption text-stone">今週の技術</p>
           <p className="text-body-sm text-foreground">
             {techCount}件
             <span className="ml-1.5 text-stone">

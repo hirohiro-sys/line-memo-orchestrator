@@ -52,16 +52,18 @@ export function SettingsView() {
       <section className="rounded-xl border border-border bg-card p-6">
         <h3 className="mb-1 text-body-sm font-medium text-foreground">通知</h3>
         <p className="mb-4 text-body-sm text-graphite">
-          その週に保存したTechタグのリソースをLINEでまとめて通知します。
+          その週に保存した技術タグのメモをLINEでまとめて通知します。
         </p>
 
         {notifications && (
           <div className="border-t border-border">
             <div className="flex items-start justify-between gap-3 py-4">
               <div>
-                <p className="text-body-sm text-foreground">Tech週次通知</p>
+                <p className="text-body-sm text-foreground">
+                  技術の週次通知
+                </p>
                 <p className="mt-0.5 text-caption text-stone">
-                  今週保存した{techCount}件のTechメモをまとめて通知
+                  今週保存した{techCount}件の技術メモをまとめて通知
                 </p>
               </div>
               <ToggleSwitch

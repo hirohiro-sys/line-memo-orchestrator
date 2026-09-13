@@ -95,14 +95,14 @@ export function MemoList() {
           </div>
           <Button
             type="button"
-            variant="outline"
-            size="icon"
+            variant="ghost"
+            size="icon-lg"
             disabled={busy || composing}
             onClick={() => setComposing(true)}
             aria-label="追加"
-            className="border-foreground bg-foreground text-background hover:bg-foreground/90 hover:text-background"
+            className="size-10  text-foreground hover:bg-foreground/8"
           >
-            <Plus className="size-4" />
+            <Plus className="size-6" />
           </Button>
         </div>
 

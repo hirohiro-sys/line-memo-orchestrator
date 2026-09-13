@@ -29,14 +29,14 @@ export const TAG_META: Record<
   },
   tech: {
     id: "tech",
-    label: "Tech",
+    label: "技術",
     hashtag: "#tech",
     description: "URL・技術記事・リソースの保存",
     className: "bg-sky-wash/25 text-foreground",
   },
   other: {
     id: "other",
-    label: "Other",
+    label: "その他",
     hashtag: "#other",
     description: "画像メモ・その他",
     className: "bg-mocha/25 text-foreground",
